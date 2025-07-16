@@ -1,4 +1,5 @@
 import sys
+from collections import deque
 TAPE_MAXLEN = 10_000
 
 
@@ -6,8 +7,7 @@ class BFFileReader:
 	@classmethod
 	def read_file(cls) -> str:
 		try:
-			#code_path: str = sys.argv[1]
-			code_path: str = 'test.bf'
+			code_path: str = sys.argv[-1]
 
 			with open(code_path, 'r') as file:
 				raw_code: str = file.read()
@@ -41,6 +41,8 @@ class BFCompiler:
 		self.init_tape()
 
 		self.head: int = 0
+
+		self.saved_input: deque[str] = deque()
 
 	def init_tape(self) -> None:
 		self.tape: list[int] = [
@@ -77,26 +79,49 @@ class BFCompiler:
 		match code_char:
 			case '>':
 				self.head += 1
+				if self.head >= TAPE_MAXLEN:
+					raise IndexError('Tape head went beyond maximum!')
 			case '<':
 				self.head -= 1
+				if self.head < 0:
+					raise IndexError('Tape head went beyond maximum!')
 			case '+':
-				self.tape[self.head] += 1
-				if self.current_cell > 255:
-					self.tape[self.head] = 0
+				self.tape[self.head] = (self.current_cell + 1) % 256
 			case '-':
-				self.tape[self.head] -= 1
-				if self.current_cell == 0:
-					self.tape[self.head] = 255
+				self.tape[self.head] = (self.current_cell - 1) % 256
 			case '.':
 				print(chr(self.current_cell), end='')
 			case ',':
-				self.tape[self.head] = ord(input()[0])
+				if not self.saved_input:
+					input_str: str = input()
+
+					self.saved_input.extend(input_str)
+					self.saved_input.append('\n')
+
+				self.tape[self.head] = ord(self.saved_input.popleft())
 
 	def run(self, code: str | None = None) -> None:
 		if code is None:
 			code = self.code
 
-		pass
+		i: int = 0
+		while i < len(code):
+			if code[i] not in '[]':
+				self.run_simple_operation(code[i])
+			elif code[i] == '[':
+				end_i: int = self._find_end_bracket(code, i)
+				new_code: str = code[i+1:end_i+1]
+				if self.current_cell != 0:
+					self.run(new_code)
+				i = end_i
+			elif code[i] == ']':
+				if self.current_cell != 0: # loop continues
+					i = 0
+					continue
+				# loop ends
+
+			i+=1
+
 
 if __name__ == '__main__':
 	compiler = BFCompiler()
