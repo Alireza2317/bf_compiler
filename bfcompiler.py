@@ -71,6 +71,34 @@ class BFCompiler:
 
 		raise SyntaxError('Unbalanced Brackets!')
 
+	def print_tape(self) -> None:
+		last_value_i: int = 0
+		for ri, cell in enumerate(reversed(self.tape)):
+			if cell != 0:
+				last_value_i = TAPE_MAXLEN - 1 - ri
+
+		end_index: int = max(
+			self.head,
+			last_value_i
+		)
+		print('\nTAPE=[', end='')
+		for i, cell in enumerate(self.tape[:end_index+1]):
+			if i == self.head:
+				print('<', end='')
+
+			print(hex(cell), end='')
+			if chr(cell).isprintable():
+				print(f'("{chr(cell)}")', end='')
+
+			if i == self.head:
+				print('>', end='')
+
+			if i != end_index:
+				print(', ', end='')
+
+		print(']')
+
+
 	@property
 	def current_cell(self) -> int:
 		return self.tape[self.head]
@@ -126,3 +154,4 @@ class BFCompiler:
 if __name__ == '__main__':
 	compiler = BFCompiler()
 	compiler.run()
+	compiler.print_tape()
