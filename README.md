@@ -1,1 +1,2 @@
-### work in progress ...
+## Brainfuck programming language interpreter, written in python
+
