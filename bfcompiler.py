@@ -4,35 +4,35 @@ TAPE_MAXLEN = 10_000
 
 
 class BFFileReader:
-	@classmethod
-	def read_file(cls) -> str:
-		try:
-			code_path: str = sys.argv[-1]
+    @classmethod
+    def read_file(cls) -> str:
+        if len(sys.argv) < 2:
+            print("Please enter a filename!")
+            exit()
+        try:
+            code_path: str = sys.argv[1]
 
-			with open(code_path, 'r') as file:
-				raw_code: str = file.read()
-		except IndexError:
-			print('Please enter a filename!')
-			exit()
-		except FileNotFoundError:
-			print('File does not exist!')
-			exit()
+            with open(code_path, "r") as file:
+                raw_code: str = file.read()
+        except FileNotFoundError:
+            print("File does not exist!")
+            exit()
 
-		return raw_code
+        return raw_code
 
-	@classmethod
-	def strip_code(cls, raw_code: str) -> str:
-		code: str = ''
-		for char in raw_code:
-			if char in '[<+-.,>]':
-				code += char
+    @classmethod
+    def strip_code(cls, raw_code: str) -> str:
+        code: str = ""
+        for char in raw_code:
+            if char in "[<+-.,>]":
+                code += char
 
-		return code
+        return code
 
-	@classmethod
-	def get_code(cls) -> str:
-		raw_code: str = cls.read_file()
-		return cls.strip_code(raw_code)
+    @classmethod
+    def get_code(cls) -> str:
+        raw_code: str = cls.read_file()
+        return cls.strip_code(raw_code)
 
 
 class BFCompiler:
@@ -154,4 +154,4 @@ class BFCompiler:
 if __name__ == '__main__':
 	compiler = BFCompiler()
 	compiler.run()
-	compiler.print_tape()
+    # compiler.print_tape()
