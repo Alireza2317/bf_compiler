@@ -1,4 +1,4 @@
-# Brainfuck Interpreter 🧠
+# Brainfuck Interpreter 
 
 ![Python](https://img.shields.io/badge/python-3.10+-blue?logo=python)
 ![License](https://img.shields.io/badge/license-MIT-grey)
@@ -8,16 +8,16 @@ A pure Python interpreter for the esoteric programming language **Brainfuck**.
 
 This implementation focuses on code readability and modern Python practices, utilizing **Type Hinting** and **Pattern Matching** (`match/case`) to process instructions on an 'infinite' tape.
 
-## ✨ Features
+## Features
 * **Standard Compliance:** Implements all 8 standard Brainfuck commands (`<`, `>`, `+`, `-`, `.`, `,`, `[`, `]`).
 * **8-Bit Cell Wrapping:** Cells wrap around 0-255 (overflows reset to 0, underflows to 255).
 * **Buffered Input:** Handles input streams efficiently using a `deque`.
 * **Tape Visualization:** Includes a debug method to visualize the memory tape and the current head position.
 
-## 🛠️ Requirements
+## Requirements
 * **Python 3.10+** (Required for `match/case` syntax).
 
-## 🚀 Usage
+## Usage
 
 ### 1. Installation
 Clone the repository:
@@ -44,7 +44,7 @@ python bf_int.py hello.bf
 Hello World!
 ```
 
-## 📂 Project Structure
+## Project Structure
 
 * **`BFFileReader` Class:** Handles file I/O and strips non-command characters (comments) from the source code.
 * **`BFCompiler` Class:** The core logic.
@@ -52,14 +52,14 @@ Hello World!
     * `run()`: Recursive execution loop that handles nested brackets `[...]` logic.
     * `print_tape()`: A debug utility to print the current state of memory.
 
-## 🐛 Debugging
+## Debugging
 You can uncomment `compiler.print_tape()` in the `main` block to see a visual representation of memory after execution:
 
 ```text
 TAPE=[0x0, 0x0, <0x48>("H")>, 0x65("e"), 0x6c("l"), ...]
 ```
 
-## 🧠 What is Brainfuck?
+## What is Brainfuck?
 Brainfuck is a minimalist esoteric programming language created in 1993. It operates on a simple array of memory cells (the "tape") and uses only 8 commands to perform all calculations.
 
 | Command | Description |
